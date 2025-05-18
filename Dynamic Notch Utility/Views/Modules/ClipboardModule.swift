@@ -65,3 +65,7 @@ struct ClipboardModule: View {
         }
     }
 } 
+
+#Preview {
+    ClipboardModule()
+}

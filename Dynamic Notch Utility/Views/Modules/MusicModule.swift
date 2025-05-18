@@ -49,3 +49,6 @@ struct MusicModule: View {
         .cornerRadius(8)
     }
 } 
+#Preview {
+    MusicModule()
+}
