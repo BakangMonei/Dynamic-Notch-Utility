@@ -18,3 +18,6 @@ struct DisplaySettingsView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
+#Preview {
+    DisplaySettingsView()
+}

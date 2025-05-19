@@ -94,3 +94,6 @@ struct VisualEffectBlur: NSViewRepresentable {
         .frame(width: 320, height: 120)
     }
 } 
+
+#Preview{
+}

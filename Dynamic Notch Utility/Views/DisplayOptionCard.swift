@@ -34,3 +34,6 @@ struct DisplayOptionCard: View {
         .buttonStyle(PlainButtonStyle())
     }
 }
+//#Preview {
+//    DisplayOptionCard();
+//}

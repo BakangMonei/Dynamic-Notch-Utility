@@ -17,3 +17,7 @@ struct ConnectivitySettingsView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
+
+#Preview {
+    ConnectivitySettingsView()
+}

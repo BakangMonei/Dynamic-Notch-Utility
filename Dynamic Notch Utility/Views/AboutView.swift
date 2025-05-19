@@ -27,3 +27,7 @@ struct AboutView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
+
+#Preview {
+    AboutView()
+}
