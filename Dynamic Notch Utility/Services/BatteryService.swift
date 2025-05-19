@@ -24,17 +24,18 @@ class BatteryService: ObservableObject {
         let sources = IOPSCopyPowerSourcesList(snapshot).takeRetainedValue() as Array
         
         for source in sources {
-            let info = IOPSGetPowerSourceDescription(snapshot, source).takeRetainedValue() as NSDictionary
+            guard let info = IOPSGetPowerSourceDescription(snapshot, source)?.takeUnretainedValue() as? [String: Any] else { continue }
             
-            if let capacity = info[kIOPSCurrentCapacityKey] as? Int {
-                batteryLevel = Double(capacity) / 100.0
+            if let current = info[kIOPSCurrentCapacityKey as String] as? Int,
+               let max = info[kIOPSMaxCapacityKey as String] as? Int, max > 0 {
+                batteryLevel = Double(current) / Double(max)
             }
             
-            if let isCharging = info[kIOPSIsChargingKey] as? Bool {
+            if let isCharging = info[kIOPSIsChargingKey as String] as? Bool {
                 self.isCharging = isCharging
             }
             
-            if let timeRemaining = info[kIOPSTimeToEmptyKey] as? Int {
+            if let timeRemaining = info[kIOPSTimeToEmptyKey as String] as? Int {
                 self.timeRemaining = TimeInterval(timeRemaining * 60)
             }
         }
