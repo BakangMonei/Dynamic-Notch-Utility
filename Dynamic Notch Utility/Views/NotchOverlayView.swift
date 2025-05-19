@@ -1,4 +1,7 @@
 import SwiftUI
+import AppKit
+import Foundation
+import SwiftUICore
 
 struct NotchOverlayView: View {
     @StateObject private var settings = Settings.shared

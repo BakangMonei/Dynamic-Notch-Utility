@@ -1,4 +1,7 @@
 import SwiftUI
+import AppKit
+import Foundation
+import SwiftUICore
 
 struct SystemStatsView: View {
     @StateObject private var statsService = SystemStatsService()

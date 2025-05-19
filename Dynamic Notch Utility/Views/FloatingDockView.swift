@@ -1,4 +1,7 @@
 import SwiftUI
+import AppKit
+import Foundation
+import SwiftUICore
 
 struct FloatingDockView<Content: View>: View {
     let content: Content

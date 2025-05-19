@@ -1,4 +1,7 @@
 import SwiftUI
+import AppKit
+import Foundation
+import SwiftUICore
 
 struct MainPanelView: View {
     enum SidebarItem: Hashable, CaseIterable, Identifiable {
@@ -47,16 +50,16 @@ struct MainPanelView: View {
         } detail: {
             Group {
                 switch selection {
-                case .general: GeneralSettingsView()
-                case .battery: BatterySettingsView()
-                case .connectivity: ConnectivitySettingsView()
-                case .focus: FocusSettingsView()
-                case .display: DisplaySettingsView()
-                case .sound: SoundSettingsView()
-                case .nowPlaying: NowPlayingSettingsView()
-                case .lockScreen: LockScreenSettingsView()
-                case .license: LicenseView()
-                case .about: AboutView()
+                case .general: EmptyView()
+                case .battery: EmptyView()
+                case .connectivity: EmptyView()
+                case .focus: EmptyView()
+                case .display: EmptyView()
+                case .sound: EmptyView()
+                case .nowPlaying: EmptyView()
+                case .lockScreen: EmptyView()
+                case .license: EmptyView()
+                case .about: EmptyView()
                 case .none: EmptyView()
                 }
             }
@@ -67,18 +70,6 @@ struct MainPanelView: View {
         .frame(minWidth: 700, minHeight: 500)
     }
 }
-
-// Placeholder views for each section
-struct GeneralSettingsView: View { var body: some View { Text("General Settings") } }
-struct BatterySettingsView: View { var body: some View { Text("Battery Settings") } }
-struct ConnectivitySettingsView: View { var body: some View { Text("Connectivity Settings") } }
-struct FocusSettingsView: View { var body: some View { Text("Focus Settings") } }
-struct DisplaySettingsView: View { var body: some View { Text("Display Settings") } }
-struct SoundSettingsView: View { var body: some View { Text("Sound Settings") } }
-struct NowPlayingSettingsView: View { var body: some View { Text("Now Playing") } }
-struct LockScreenSettingsView: View { var body: some View { Text("Lock Screen Settings") } }
-struct LicenseView: View { var body: some View { Text("License") } }
-struct AboutView: View { var body: some View { Text("About") } }
 
 #Preview {
     MainPanelView()

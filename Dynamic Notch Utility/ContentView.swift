@@ -1,128 +1,144 @@
-//
-//  ContentView.swift
-//  Dynamic Notch Utility
-//
-//  Created by Monei Bakang Mothuti on 19/05/25.
-//
-
 import SwiftUI
+import AppKit
+import Foundation
+import SwiftUICore
 
+// MARK: - Main Content View
 struct ContentView: View {
     @StateObject private var settings = Settings.shared
-    @State private var selectedTab = 0
+    @State private var selectedTab: Int? = 0
     
     var body: some View {
-        TabView(selection: $selectedTab) {
-            // Main View
-            NotchOverlayView()
-                .tabItem {
-                    Label("Notch", systemImage: "display")
+        NavigationView {
+            // Sidebar
+            List {
+                NavigationLink(
+                    destination: GeneralSettingsView(),
+                    tag: 0,
+                    selection: $selectedTab
+                ) {
+                    Label("General", systemImage: "gear")
+                        .foregroundColor(.primary)
                 }
-                .tag(0)
+                
+                Section("Notifications") {
+                    NavigationLink(
+                        destination: NotificationSettingsView(),
+                        tag: 1,
+                        selection: $selectedTab
+                    ) {
+                        Label("Notifications", systemImage: "bell")
+                            .foregroundColor(.primary)
+                    }
+                }
+                
+                Section("Module Settings") {
+                    NavigationLink(
+                        destination: BatterySettingsView(),
+                        tag: 2,
+                        selection: $selectedTab
+                    ) {
+                        Label("Battery", systemImage: "battery.100")
+                            .foregroundColor(.orange)
+                    }
+                    
+                    NavigationLink(
+                        destination: ConnectivitySettingsView(),
+                        tag: 3,
+                        selection: $selectedTab
+                    ) {
+                        Label("Connectivity", systemImage: "wifi")
+                            .foregroundColor(.green)
+                    }
+                    
+                    NavigationLink(
+                        destination: FocusSettingsView(),
+                        tag: 4,
+                        selection: $selectedTab
+                    ) {
+                        Label("Focus", systemImage: "moon.fill")
+                            .foregroundColor(.purple)
+                    }
+                    
+                    NavigationLink(
+                        destination: DisplaySettingsView(),
+                        tag: 5,
+                        selection: $selectedTab
+                    ) {
+                        Label("Display", systemImage: "display")
+                            .foregroundColor(.purple)
+                    }
+                    
+                    NavigationLink(
+                        destination: SoundSettingsView(),
+                        tag: 6,
+                        selection: $selectedTab
+                    ) {
+                        Label("Sound", systemImage: "speaker.wave.3")
+                            .foregroundColor(.blue)
+                    }
+                }
+                
+                Section("Live Activities") {
+                    NavigationLink(
+                        destination: NowPlayingSettingsView(),
+                        tag: 7,
+                        selection: $selectedTab
+                    ) {
+                        Label("Now Playing", systemImage: "play.fill")
+                            .foregroundColor(.pink)
+                    }
+                    
+                    NavigationLink(
+                        destination: LockScreenSettingsView(),
+                        tag: 8,
+                        selection: $selectedTab
+                    ) {
+                        Label("Lock Screen", systemImage: "lock.fill")
+                            .foregroundColor(.gray)
+                    }
+                }
+                
+                Section("Alcove") {
+                    NavigationLink(
+                        destination: LicenseView(),
+                        tag: 9,
+                        selection: $selectedTab
+                    ) {
+                        Label("License", systemImage: "checkmark.seal")
+                            .foregroundColor(.green)
+                    }
+                    
+                    NavigationLink(
+                        destination: AboutView(),
+                        tag: 10,
+                        selection: $selectedTab
+                    ) {
+                        Label("About", systemImage: "info.circle")
+                            .foregroundColor(.blue)
+                    }
+                }
+            }
+            .listStyle(SidebarListStyle())
+            .frame(minWidth: 250)
             
-            // Settings View
-            SettingsView()
-                .tabItem {
-                    Label("Settings", systemImage: "gear")
+            // Main content area
+            Group {
+                if selectedTab == 0 {
+                    GeneralSettingsView()
+                } else {
+                    EmptyStateView()
                 }
-                .tag(1)
-            
-            // Modules View
-            ModulesView()
-                .tabItem {
-                    Label("Modules", systemImage: "square.grid.2x2")
-                }
-                .tag(2)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .frame(width: 400, height: 500)
+        .frame(width: 900, height: 600)
+        .onAppear {
+            selectedTab = 0
+        }
     }
 }
 
-struct SettingsView: View {
-    @StateObject private var settings = Settings.shared
-    
-    var body: some View {
-        Form {
-            Section("Appearance") {
-                ColorPicker("Background Color", selection: $settings.backgroundColor)
-                ColorPicker("Text Color", selection: $settings.textColor)
-                Slider(value: $settings.notchOpacity, in: 0...1) {
-                    Text("Opacity")
-                }
-                Slider(value: $settings.cornerRadius, in: 0...20) {
-                    Text("Corner Radius")
-                }
-            }
-            
-            Section("Behavior") {
-                Toggle("Auto Hide", isOn: $settings.autoHide)
-                if settings.autoHide {
-                    Slider(value: $settings.autoHideDelay, in: 1...10) {
-                        Text("Hide Delay (seconds)")
-                    }
-                }
-                Toggle("Show Notifications", isOn: $settings.showNotifications)
-                Slider(value: $settings.animationSpeed, in: 0.1...1) {
-                    Text("Animation Speed")
-                }
-            }
-            
-            Section("Module Settings") {
-                Slider(value: $settings.batteryWarningThreshold, in: 0.1...0.5) {
-                    Text("Battery Warning Threshold")
-                }
-                Slider(value: $settings.pomodoroWorkDuration, in: 5...60) {
-                    Text("Pomodoro Work Duration (minutes)")
-                }
-                Slider(value: $settings.pomodoroBreakDuration, in: 1...30) {
-                    Text("Pomodoro Break Duration (minutes)")
-                }
-                Slider(value: $settings.weatherUpdateInterval, in: 5...120) {
-                    Text("Weather Update Interval (minutes)")
-                }
-                Stepper("Clipboard History Size: \(settings.clipboardMaxItems)", value: $settings.clipboardMaxItems, in: 5...20)
-            }
-        }
-        .padding()
-    }
-}
-
-struct ModulesView: View {
-    @StateObject private var settings = Settings.shared
-    
-    private let availableModules = [
-        ("battery", "Battery", "battery.100"),
-        ("music", "Music", "music.note"),
-        ("pomodoro", "Pomodoro", "timer"),
-        ("weather", "Weather", "cloud.sun"),
-        ("clipboard", "Clipboard", "doc.on.clipboard")
-    ]
-    
-    var body: some View {
-        List {
-            ForEach(availableModules, id: \.0) { module in
-                Toggle(isOn: Binding(
-                    get: { settings.enabledModules.contains(module.0) },
-                    set: { isEnabled in
-                        if isEnabled {
-                            settings.enabledModules.insert(module.0)
-                        } else {
-                            settings.enabledModules.remove(module.0)
-                        }
-                        settings.saveSettings()
-                    }
-                )) {
-                    HStack {
-                        Image(systemName: module.2)
-                            .frame(width: 20)
-                        Text(module.1)
-                    }
-                }
-            }
-        }
-        .padding()
-    }
-}
 
 #Preview {
     ContentView()

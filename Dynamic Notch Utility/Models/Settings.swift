@@ -7,6 +7,11 @@ class Settings: ObservableObject {
     @Published var notchPosition: CGPoint = .zero
     @Published var notchSize: CGSize = CGSize(width: 200, height: 30)
     
+    // System Settings
+        @Published var launchAtLogin = true
+        @Published var hideMenuBarIcon = true
+        @Published var hideFromScreenCapture = false
+    
     // New customization options
     @Published var backgroundColor: Color = .black
     @Published var textColor: Color = .white
@@ -19,13 +24,26 @@ class Settings: ObservableObject {
     @Published var showNotifications: Bool = true
     @Published var notificationDuration: Double = 3.0
     
-    // Module-specific settings
-    @Published var batteryWarningThreshold: Double = 0.2
-    @Published var pomodoroWorkDuration: TimeInterval = 25 * 60
-    @Published var pomodoroBreakDuration: TimeInterval = 5 * 60
-    @Published var weatherUpdateInterval: TimeInterval = 30 * 60
-    @Published var clipboardMaxItems: Int = 10
+    // Behavior Settings
+        @Published var hapticFeedback = true
+        @Published var expandOnHover = true
+        @Published var useAccentColor = true
+        @Published var naturalMovement = true
+        @Published var swipeToToggle = true
     
+
+        @Published var batteryWarningThreshold: Double = 0.2
+        @Published var pomodoroWorkDuration: Double = 25
+        @Published var pomodoroBreakDuration: Double = 5
+        @Published var weatherUpdateInterval: Double = 30
+        @Published var clipboardMaxItems = 10
+      
+    
+    
+    
+    // New battery-specific settings
+        @Published var showBatteryPercentage = true
+        @Published var lowBatteryWarnings = true
     static let shared = Settings()
     
     private init() {
